@@ -18,9 +18,9 @@ read input
 if [[ $input == "Y" || $input == "y" ]]; then
     echo -n "Masukkan kata yang ingin di terjemahkan : "
 	read teks
-	# teks=$(echo "$teks" | sed 's/ /+/g');
 	curl=`curl -s "http://mongosilakan.net/api/v1/translate/translate" -H 'Origin: https://mongosilakan.net' -H 'Accept-Encoding: gzip, deflate, br' -H 'Accept-Language: en-US,en;q=0.9' -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36' -H 'Content-Type: application/x-www-form-urlencoded' -H 'Accept: application/json, text/plain, */*' -H 'Referer: https://mongosilakan.net/' -H 'Cookie: __utma=19314980.49552927.1537517823.1537517823.1537517823.1; __utmz=19314980.1537517823.1.1.utmcsr=google|utmccn=(organic)|utmcmd=organic|utmctr=(not%20provided); _ga=GA1.2.49552927.1537517823; _gid=GA1.2.1324146535.1537517823; G_ENABLED_IDPS=google; PHPSESSID=ptu2n18q0fggfbefc7c80vv342; _gat=1' -H 'Connection: keep-alive' --data "from=id-ID&source=$teks&to=jv-NG" --compressed`
-	grab=$( echo "$curl" | grep -Po '(?<=basic":")[^"]*' )
+	# echo $curl
+	grab=$( echo "$curl" | awk -F 'basic":"' {'print $2'} | cut -d '"' -f1)
 	footer="[MinorityCode_ - Indonesia & Java translate]"
   if [[ $grab > 0 ]]; then
     printf "$teks => $grab | $footer.\n"
@@ -28,12 +28,9 @@ fi
 else
     echo -n "lebokake tembung sing pengen di terjemahake : "
 	read teks
-	# teks=$(echo "$teks" | sed 's/ /+/g');
 	curl=`curl -s "http://mongosilakan.net/api/v1/translate/translate" -H 'Origin: https://mongosilakan.net' -H 'Accept-Encoding: gzip, deflate, br' -H 'Accept-Language: en-US,en;q=0.9' -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36' -H 'Content-Type: application/x-www-form-urlencoded' -H 'Accept: application/json, text/plain, */*' -H 'Referer: https://mongosilakan.net/' -H 'Cookie: __utma=19314980.49552927.1537517823.1537517823.1537517823.1; __utmz=19314980.1537517823.1.1.utmcsr=google|utmccn=(organic)|utmcmd=organic|utmctr=(not%20provided); _ga=GA1.2.49552927.1537517823; _gid=GA1.2.1324146535.1537517823; G_ENABLED_IDPS=google; PHPSESSID=ptu2n18q0fggfbefc7c80vv342; _gat=1' -H 'Connection: keep-alive' --data "from=jv-NG&source=$teks&to=id-ID" --compressed`
-	grab=$( echo "$curl" | grep -Po '(?<=basic":")[^"]*' )
-	#echo $curl
+	grab=$( echo "$curl" | awk -F 'basic":"' {'print $2'} | cut -d '"' )
 	footer="[MinorityCode_ - Indonesia & Java translate]"
-	#echo $grab
   if [[ $grab > 0 ]]; then
     printf "$teks => $grab | $footer.\n"
 fi
